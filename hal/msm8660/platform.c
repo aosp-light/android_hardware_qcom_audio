@@ -791,8 +791,8 @@ snd_device_t platform_get_input_snd_device(void *platform, audio_devices_t out_d
             } else
                 set_echo_reference(adev->mixer, "NONE");
         }
-    } else if (source == AUDIO_SOURCE_FM_RADIO) {
-        in_device = AUDIO_DEVICE_IN_FM_RADIO;
+    } else if (source == AUDIO_SOURCE_FM_TUNER) {
+        in_device = AUDIO_DEVICE_IN_FM_TUNER;
         snd_device = SND_DEVICE_IN_FM_RADIO;
     } else if (source == AUDIO_SOURCE_DEFAULT) {
         goto exit;
