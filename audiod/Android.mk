@@ -1,5 +1,4 @@
 LOCAL_PATH:= $(call my-dir)
-ifeq ($(strip $(BOARD_AUDIO_VARIANT)),caf)
 include $(CLEAR_VARS)
 include external/stlport/libstlport.mk
 
@@ -16,10 +15,7 @@ LOCAL_SHARED_LIBRARIES := \
 	libmedia \
 	libstlport
 
-LOCAL_ADDITIONAL_DEPENDENCIES += device/sony/hikari/kernel-headers
-
 LOCAL_MODULE:= audiod
 LOCAL_MODULE_TAGS:= debug
 
 include $(BUILD_EXECUTABLE)
-endif
