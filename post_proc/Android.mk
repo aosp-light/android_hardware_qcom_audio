@@ -1,4 +1,4 @@
-ifneq ($(filter msm8974 msm8226 msm8084,$(TARGET_BOARD_PLATFORM)),)
+ifneq ($(filter msm8660 msm8974 msm8226 msm8084,$(TARGET_BOARD_PLATFORM)),)
 
 LOCAL_PATH:= $(call my-dir)
 
