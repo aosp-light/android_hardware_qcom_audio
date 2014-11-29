@@ -16,7 +16,6 @@
 
 #define LOG_TAG "msm8660_platform"
 /*#define LOG_NDEBUG 0*/
-#define LOG_NDDEBUG 0
 
 #include <stdlib.h>
 #include <dlfcn.h>
@@ -387,6 +386,8 @@ void platform_add_backend_name(char *mixer_path, snd_device_t snd_device)
         strcat(mixer_path, " hdmi");
     else if (snd_device == SND_DEVICE_OUT_SPEAKER_AND_HDMI)
         strcat(mixer_path, " speaker-and-hdmi");
+    else if (snd_device == SND_DEVICE_IN_FM_RADIO)
+        strcat(mixer_path, " fm-radio");
 }
 
 int platform_get_pcm_device_id(audio_usecase_t usecase, int device_type)
