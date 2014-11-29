@@ -61,6 +61,9 @@
 #define PROXY_OPEN_RETRY_COUNT           100
 #define PROXY_OPEN_WAIT_TIME             20
 
+static unsigned int configured_low_latency_capture_period_size =
+        LOW_LATENCY_CAPTURE_PERIOD_SIZE;
+
 /* This constant enables extended precision handling.
  * TODO The flag is off until more testing is done.
  */
@@ -1144,6 +1147,7 @@ static size_t get_input_buffer_size(uint32_t sample_rate,
 
     size = (sample_rate * AUDIO_CAPTURE_PERIOD_DURATION_MSEC) / 1000;
     if (is_low_latency)
+        size = configured_low_latency_capture_period_size;
     /* ToDo: should use frame_size computed based on the format and
        channel_count here. */
     size *= sizeof(short) * channel_count;
@@ -2409,7 +2413,8 @@ static int adev_open_input_stream(struct audio_hw_device *dev,
         in->config = pcm_config_afe_proxy_record;
     } else {
         in->usecase = USECASE_AUDIO_RECORD;
-        if (config->sample_rate == (flags & AUDIO_INPUT_FLAG_FAST) != 0) {
+        if (config->sample_rate == LOW_LATENCY_CAPTURE_SAMPLE_RATE &&
+                (flags & AUDIO_INPUT_FLAG_FAST) != 0) {
             is_low_latency = true;
 #if LOW_LATENCY_CAPTURE_USE_CASE
             in->usecase = USECASE_AUDIO_RECORD_LOW_LATENCY;
@@ -2728,11 +2733,13 @@ static int adev_open(const hw_module_t *module, const char *name,
             pcm_config_low_latency.period_size = trial;
             pcm_config_low_latency.start_threshold = trial / 4;
             pcm_config_low_latency.avail_min = trial / 4;
+            configured_low_latency_capture_period_size = trial;
         }
     }
     if (property_get("audio_hal.in_period_size", value, NULL) > 0) {
         trial = atoi(value);
         if (period_size_is_plausible_for_low_latency(trial)) {
+            configured_low_latency_capture_period_size = trial;
         }
     }
 
