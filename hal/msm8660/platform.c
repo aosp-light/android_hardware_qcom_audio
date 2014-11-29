@@ -153,6 +153,7 @@ static const char * const device_table[SND_DEVICE_MAX] = {
     [SND_DEVICE_IN_VOICE_REC_DMIC_BS] = "voice-rec-dmic-bs",
     [SND_DEVICE_IN_VOICE_REC_DMIC_EF_FLUENCE] = "voice-rec-dmic-ef-fluence",
     [SND_DEVICE_IN_VOICE_REC_DMIC_BS_FLUENCE] = "voice-rec-dmic-bs-fluence",
+    [SND_DEVICE_IN_FM_RADIO] = "fm-radio",
 };
 
 /* ACDB IDs (audio DSP path configuration IDs) for each sound device */
@@ -198,6 +199,7 @@ static const int acdb_device_table[SND_DEVICE_MAX] = {
     [SND_DEVICE_IN_VOICE_REC_DMIC_BS] = 62,
     [SND_DEVICE_IN_VOICE_REC_DMIC_EF_FLUENCE] = 6,
     [SND_DEVICE_IN_VOICE_REC_DMIC_BS_FLUENCE] = 5,
+    [SND_DEVICE_IN_FM_RADIO] = 255,
 };
 
 #define DEEP_BUFFER_PLATFORM_DELAY (29*1000LL)
@@ -753,6 +755,9 @@ snd_device_t platform_get_input_snd_device(void *platform, audio_devices_t out_d
             } else
                 set_echo_reference(adev->mixer, "NONE");
         }
+    } else if (source == AUDIO_SOURCE_FM_RADIO) {
+        in_device = AUDIO_DEVICE_IN_FM_RADIO;
+        snd_device = SND_DEVICE_IN_FM_RADIO;
     } else if (source == AUDIO_SOURCE_DEFAULT) {
         goto exit;
     }
